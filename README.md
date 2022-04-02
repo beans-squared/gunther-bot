@@ -1,1 +1,1 @@
-beansquared Bot
+Repo for my personal discord bot.

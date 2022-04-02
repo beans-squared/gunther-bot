@@ -12,6 +12,24 @@ client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
+client.on("interactionCreate", async interaction => {
+  if(!interaction.isCommand()) return;
+
+  const { commandName } = interaction;
+
+  switch(commandName) {
+    case "ping":
+      await interaction.reply("Pong!");
+      break;
+    case "server":
+      await interaction.reply(`**Server name:** ${interaction.guild.name}\n**Number of members:** ${interaction.guild.memberCount} out of ${interaction.guild.maximumMembers} possible members\n**Server creation date:** ${interaction.guild.createdAt}\n**Server description:** ${interaction.guild.description}\n**Server partner status:** ${interaction.guild.partnered}\n**Server verification status:** ${interaction.guild.verified}`);
+      break;
+    case "user":
+      await interaction.reply(`**User name:** ${interaction.user.username}\n**User tag:** ${interaction.user.tag}\n**Account creation date:**  ${interaction.user.createdAt}`);
+      break;
+  }
+});
+
 client.on("messageCreate", message => {
   switch(message.content) {
     case "shane":

@@ -8,41 +8,41 @@ const client = new Client({
   ]
 });
 
-client.on('ready', () => {
+client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
-client.on('message', message => {
+client.on("messageCreate", message => {
   switch(message.content) {
     case "shane":
-      message.reply("what you want hoe");
+      message.channel.send("what you want hoe");
       break;
     case "ur mom":
-      message.reply("gottem");
+      message.channel.send("gottem");
       break;
     case "uis":
-      message.reply("gay");
+      message.channel.send("gay");
       break;
     case "is hard":
-      message.reply("me too");
+      message.channel.send("me too");
       break;
     case "are hard":
-      message.reply("me too");
+      message.channel.send("me too");
       break;
     case "deep cock":
-      message.reply("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
+      message.channel.send("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
       break;
     case "cs?":
-      message.reply("cs dis dick in ur ass");
+      message.channel.send("cs dis dick in ur ass");
       break;
     case "no u":
-      message.reply("fuck");
+      message.channel.send("fuck");
       break;
     case "union":
-      message.reply("it's called the onion you illiterate fuck");
+      message.channel.send("it's called the onion you illiterate fuck");
       break;
     case "brad":
-      message.reply("fuck you Brad");
+      message.channel.send("fuck you Brad");
       break;
   }
 });

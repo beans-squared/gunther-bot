@@ -1,4 +1,5 @@
-const { Client, Intents } = require('discord.js');
+const fs = require("node:fs");
+const { Client, Collection, Intents } = require('discord.js');
 const { token } = require('./config.json');
 
 const client = new Client({
@@ -8,6 +9,14 @@ const client = new Client({
   ]
 });
 
+client.commands = new Collection();
+const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
+
+for (const file of commandFiles) {
+  const command = require(`./commands/${file}`);
+  client.commands.set(command.data.name, command);
+}
+
 client.once('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
@@ -15,18 +24,15 @@ client.once('ready', () => {
 client.on("interactionCreate", async interaction => {
   if(!interaction.isCommand()) return;
 
-  const { commandName } = interaction;
+  const command = client.commands.get(interaction.commandName);
 
-  switch(commandName) {
-    case "ping":
-      await interaction.reply("Pong!");
-      break;
-    case "server":
-      await interaction.reply(`**Server name:** ${interaction.guild.name}\n**Number of members:** ${interaction.guild.memberCount} out of ${interaction.guild.maximumMembers} possible members\n**Server creation date:** ${interaction.guild.createdAt}\n**Server description:** ${interaction.guild.description}\n**Server partner status:** ${interaction.guild.partnered}\n**Server verification status:** ${interaction.guild.verified}`);
-      break;
-    case "user":
-      await interaction.reply(`**User name:** ${interaction.user.username}\n**User tag:** ${interaction.user.tag}\n**Account creation date:**  ${interaction.user.createdAt}`);
-      break;
+  if (!command) return;
+
+  try {
+    await command.execute(interaction);
+  } catch (error) {
+    console.error(error);
+    await interation.reply({ content: "There was an error while executing this command.", ephemeral: true });
   }
 });
 

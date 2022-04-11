@@ -5,7 +5,11 @@ const { token } = require('./config.json');
 const client = new Client({
   intents: [
     Intents.FLAGS.GUILDS,
-    Intents.FLAGS.GUILD_MESSAGES
+    Intents.FLAGS.GUILD_MESSAGES,
+    Intents.FLAGS.DIRECT_MESSAGES,
+  ],
+  partials: [
+    'CHANNEL', // Required for DMs (wack)
   ]
 });
 

@@ -1,1 +1,1 @@
-Repo for my personal discord bot.
+Repo for my personal discord bot. Currently work in progress.

@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
+const { MessageEmbed } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -24,13 +25,43 @@ module.exports = {
       case "user":
         const user = interaction.options.getUser("target");
         if (user) {
-          await interaction.reply(`**User name:** ${user.username}\n**User tag:** ${user.tag}\n**Account creation date:**  ${user.createdAt}`);
+          const responseEmbed = new MessageEmbed()
+            .setColor(user.accentColor)
+            .setTitle(user.tag)
+            .setThumbnail(user.avatarURL())
+            .addFields(
+              { name: "Username", value: `${user.username}`, inline: true },
+              { name: "Account Creation Date", value: `${user.createdAt}`, inline: true },
+              { name: "ID", value: `${user.id}`, inline: true },
+            );
+          await interaction.reply({ embeds: [responseEmbed] });
         } else {
-          await interaction.reply(`**User name:** ${interaction.user.username}\n**User tag:** ${interaction.user.tag}\n**Account creation date:**  ${interaction.user.createdAt}`);
+          const responseEmbed = new MessageEmbed()
+            .setColor(interaction.user.accentColor)
+            .setTitle(interaction.user.tag)
+            .setThumbnail(interaction.user.avatarURL())
+            .addFields(
+              { name: "Username", value: `${interaction.user.username}`, inline: true },
+              { name: "Account Creation Date", value: `${interaction.user.createdAt}`, inline: true },
+              { name: "User ID", value: `${interaction.user.id}`, inline: true },
+            );
+          await interaction.reply({ embeds: [responseEmbed] });
         }
         break;
       case "server":
-        await interaction.reply(`**Server name:** ${interaction.guild.name}\n**Number of members:** ${interaction.guild.memberCount} out of ${interaction.guild.maximumMembers} possible members\n**Server creation date:** ${interaction.guild.createdAt}\n**Server description:** ${interaction.guild.description}\n**Server partner status:** ${interaction.guild.partnered}\n**Server verification status:** ${interaction.guild.verified}`);
+        const serverOwner = await interaction.guild.fetchOwner();
+        const responseEmbed = new MessageEmbed()
+          .setTitle(interaction.guild.name)
+          .setThumbnail(interaction.guild.iconURL())
+          .addFields(
+            { name: "Guild Name", value: `${interaction.guild.name}`, inline: true },
+            { name: "Guild Description", value: `${interaction.guild.description}`, inline: true },
+            { name: "Guild Creation Date", value: `${interaction.guild.createdAt}`, inline: true },
+            { name: "Guild ID", value: `${interaction.guild.id}`, inline: true },
+            { name: "Guild Owner", value: `${serverOwner.user.tag}`, inline: true },
+            { name: "Guild Member Count", value: `${interaction.guild.memberCount}/${interaction.guild.maximumMembers}`, inline: true },
+          );
+        await interaction.reply({ embeds: [responseEmbed] });
         break;
     }
   },

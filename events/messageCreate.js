@@ -12,11 +12,6 @@ module.exports = {
 			if (message.content.includes('Gunther!')) {
 				message.channel.send('Hey!');
 			}
-
-			// Fuck Brad
-			if (message.author.id === '173532194676015105') {
-				message.channel.send('Fuck you, Brad!');
-			}
 		}
 	},
 };

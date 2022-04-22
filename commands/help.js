@@ -11,6 +11,7 @@ module.exports = {
 				.addChoice('8ball', '8ball')
 				.addChoice('avatar', 'avatar')
 				.addChoice('coinflip', 'coinflip')
+				.addChoice('decide', 'decide')
 				.addChoice('diceroll', 'diceroll')
 				.addChoice('help', 'help')
 				.addChoice('info', 'info')

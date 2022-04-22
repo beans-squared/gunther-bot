@@ -47,7 +47,7 @@ module.exports = {
 			case 'decide':
 				await interaction.reply({ content: `Command: **decide**
 			Usage: **decide** <choice1> <choice2> [choice3] [choice4] [choice5] [choice6] [choice7] [choice8] [choice9] [choice10]
-				_Have ${interaction.client.user.username} make difficult, life-chaning decisions for you_
+				_Have ${interaction.client.user.username} make difficult, life-changing decisions for you_
 				`, ephemeral: true });
 				break;
 			case 'diceroll':
@@ -109,7 +109,7 @@ module.exports = {
 		**coinflip**
 			_Have ${interaction.client.user.username} flip a virtual coin for you_
 		**decide** <choice1> <choice2> [choice3] [choice4] [choice5] [choice6] [choice7] [choice8] [choice9] [choice10]
-			_Have ${interaction.client.user.username} make difficult, life-chaning decisions for you_
+			_Have ${interaction.client.user.username} make difficult, life-changing decisions for you_
 		**diceroll** [number of dice] [die type]
 			_Have ${interaction.client.user.username} roll some virtual dice for you and give you the total result_
         **help** [command name]

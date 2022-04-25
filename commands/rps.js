@@ -24,9 +24,9 @@ module.exports = {
 		switch (botChoice) {
 		// Rock
 		case 0:
-			if (userChoice === 'rock') {
+			if (userChoice === 'Rock') {
 				await interaction.editReply('You chose **Rock**...\n...I chose **Rock.**\nIt\'s a _tie._');
-			} else if (userChoice === 'paper') {
+			} else if (userChoice === 'Paper') {
 				await interaction.editReply('You chose **Paper**...\n...I chose **Rock.**\nPaper covers Rock. _You win._');
 			} else {
 				await interaction.editReply('You chose **Scissors**...\n...I chose **Rock.**\nRock crushes Scissors. _I win!_');
@@ -34,9 +34,9 @@ module.exports = {
 			break;
 		// Paper
 		case 1:
-			if (userChoice === 'rock') {
+			if (userChoice === 'Rock') {
 				await interaction.editReply('You chose **Rock**...\n...I chose **Paper.**\nPaper covers Rock. _I win!_');
-			} else if (userChoice === 'paper') {
+			} else if (userChoice === 'Paper') {
 				await interaction.editReply('You chose **Paper**...\n...I chose **Paper.**\nIt\'s a _tie._');
 			} else {
 				await interaction.editReply('You chose **Scissors**...\n...I chose **Paper.**\nScissors cut paper. _You win._');
@@ -44,9 +44,9 @@ module.exports = {
 			break;
 		// Scissors
 		case 2:
-			if (userChoice === 'rock') {
+			if (userChoice === 'Rock') {
 				await interaction.editReply('You chose **Rock**...\n...I chose **Scissors.**\nRock crushes Scissors. _You win._');
-			} else if (userChoice === 'paper') {
+			} else if (userChoice === 'Paper') {
 				await interaction.editReply('You chose **Paper**...\n...I chose **Scissors**\nScissors cut paper. _I win!_');
 			} else {
 				await interaction.editReply('You chose **Scissors**...\n...I chose **Scissors**\nIt\'s a _tie._');

@@ -107,7 +107,7 @@ module.exports = {
 					{ name: 'ID', value: `${interaction.client.user.id}`, inline: true },
 					{ name: 'Servers Present In', value: `${interaction.client.guilds.cache.size}`, inline: true },
 					// need to update this regularly, maybe store in config.json
-					{ name: 'Total Lines of Code', value: '714', inline: true },
+					{ name: 'Total Lines of Code', value: '888', inline: true },
 				);
 				// Set this to the full Gunther art when it's done
 				// .setImage();

@@ -16,6 +16,12 @@ module.exports = {
 				.setDescription('Disable debug output'),
 		),
 	async execute(interaction) {
+		// Check if the executor is not beansquared#0666
+		if (!(interaction.user.id === '240161761393639425')) {
+			await interaction.reply('Access Denied: This command is restriced to the developer of this application only.');
+			return;
+		}
+
 		if (interaction.options.getSubcommand() === 'enable') {
 			logger.level = 'debug';
 			logger.debug('Debug logging has been enabled.');

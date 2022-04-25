@@ -2,6 +2,7 @@ const fs = require('node:fs');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const { clientId, token } = require('./config.json');
+const logger = require('./logger');
 
 const commands = [];
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -15,15 +16,15 @@ const rest = new REST({ version: '9' }).setToken(token);
 
 (async () => {
 	try {
-		console.log('Started globally refreshing application slash commands.');
+		logger.info('Started globally reloading application slash commands.');
 
 		await rest.put(
 			Routes.applicationCommands(clientId),
 			{ body: commands },
 		);
 
-		console.log('Successfully globally reloaded application slash commands.');
+		logger.info('Successfully globally reloaded application slash commands.');
 	} catch (error) {
-		console.error(error);
+		logger.error(error);
 	}
 })();

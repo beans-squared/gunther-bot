@@ -1,20 +1,22 @@
+const logger = require('./../logger');
+
 module.exports = {
 	name: 'ready',
 	once: true,
 	execute(client) {
-		console.log(`Ready! Logged in as ${client.user.tag}`);
+		logger.info(`Bot online, logged in as ${client.user.tag}`);
 
 		// Gunther's presence update cycle
+		// 1800000ms = 30m
 		decideActivity();
 		setInterval(decideActivity, 1800000);
 
 		function decideActivity() {
 			const activityChoice = Math.floor(Math.random() * 3);
-			console.log('Setting new activity status...');
+			logger.debug('Setting new activity status...');
 
 			switch (activityChoice) {
 			case 0: {
-				console.log('Playin a game was chosen');
 				const games = [
 					'Besiege',
 					'Deep Rock Galactic',
@@ -31,6 +33,7 @@ module.exports = {
 					'The Forest',
 				];
 				const gameChoice = Math.floor(Math.random() * games.length);
+				logger.debug(`'Playing a game' chosen as activity. Game choice: ${games[gameChoice]}`);
 				client.user.setPresence({
 					activities: [{
 						type: 'PLAYING',
@@ -41,7 +44,7 @@ module.exports = {
 				break;
 			}
 			case 1:
-				console.log('Listening to Spotify was chosen');
+				logger.debug('\'Listening to Spotify\' chosen as activity.');
 				client.user.setPresence({
 					activities: [{
 						type: 'LISTENING',
@@ -51,7 +54,7 @@ module.exports = {
 				});
 				break;
 			case 2:
-				console.log('Watching YouTube was chosen');
+				logger.debug('\'Watching YouTube\' chosen as activity.');
 				client.user.setPresence({
 					activities: [{
 						type: 'WATCHING',

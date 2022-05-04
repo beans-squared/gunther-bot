@@ -5,7 +5,7 @@ module.exports = {
 	execute(interaction) {
 		// Slash command interactions
 		if (interaction.isCommand()) {
-			logger.debug(`Command: /${interaction.commandName} has been executed by ${interaction.user.tag} in #${interaction.channel.name}`);
+			logger.info(`Command: /${interaction.commandName} has been executed by ${interaction.user.tag} in #${interaction.channel.name}`);
 
 			const command = interaction.client.commands.get(interaction.commandName);
 

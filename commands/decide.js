@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const logger = require('./../logger');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -90,6 +91,11 @@ module.exports = {
 		if (interaction.options.getString('choice10')) {
 			choices[9] = interaction.options.getString('choice10');
 			numberOfChoices++;
+		}
+
+		logger.debug('User choices entered:');
+		for (const choice of choices) {
+			logger.debug(choice);
 		}
 
 		const botChoice = Math.floor(Math.random() * numberOfChoices);

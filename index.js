@@ -1,5 +1,6 @@
 const fs = require('node:fs');
 const { Client, Collection, Intents } = require('discord.js');
+const { Users } = require('./dbObjects');
 const { token } = require('./config.json');
 
 const client = new Client({
@@ -12,6 +13,31 @@ const client = new Client({
 		// Required for DMs (wack)
 		'CHANNEL',
 	],
+});
+
+const currency = new Collection();
+
+Reflect.defineProperty(currency, 'add', {
+	value: async (id, amount) => {
+		const user = currency.get(id);
+
+		if (user) {
+			user.balance += Number(amount);
+			return user.save();
+		}
+
+		const newUser = await Users.create({ user_id: id, balance: amount });
+		currency.set(id, newUser);
+
+		return newUser;
+	},
+});
+
+Reflect.defineProperty(currency, 'getBalance', {
+	value: id => {
+		const user = currency.get(id);
+		return user ? user.balance : 0;
+	},
 });
 
 client.commands = new Collection();

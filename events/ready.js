@@ -1,9 +1,14 @@
+const Users = require('../models/Users');
 const logger = require('./../logger');
+const index = require('./../index');
 
 module.exports = {
 	name: 'ready',
 	once: true,
-	execute(client) {
+	async execute(client) {
+		const storedBalances = await Users.findAll();
+		storedBalances.forEach(b => index.currency.set(b.user_id, b));
+
 		logger.info(`Bot online, logged in as ${client.user.tag}`);
 
 		// Gunther's presence update cycle

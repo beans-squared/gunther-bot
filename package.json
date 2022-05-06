@@ -26,7 +26,9 @@
     "dayjs": "^1.11.1",
     "discord-api-types": "^0.31.0",
     "discord.js": "^13.6.0",
-    "pino": "^7.0.0-rc.9"
+    "pino": "^7.0.0-rc.9",
+    "sequelize": "^6.19.0",
+    "sqlite3": "^5.0.7"
   },
   "devDependencies": {
     "eslint": "^8.13.0"

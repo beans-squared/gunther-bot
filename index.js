@@ -1,10 +1,14 @@
 const fs = require('node:fs');
+const logger = require('./logger');
 const { Client, Collection, Intents } = require('discord.js');
-const { token } = require('./config.json');
+const { loggingLevel, token } = require('./config.json');
+
+logger.level = loggingLevel;
 
 const client = new Client({
 	intents: [
 		Intents.FLAGS.GUILDS,
+		Intents.FLAGS.GUILD_MEMBERS,
 		Intents.FLAGS.GUILD_MESSAGES,
 		Intents.FLAGS.DIRECT_MESSAGES,
 	],

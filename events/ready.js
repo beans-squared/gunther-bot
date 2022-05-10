@@ -3,7 +3,7 @@ const logger = require('./../logger');
 module.exports = {
 	name: 'ready',
 	once: true,
-	execute(client) {
+	async execute(client) {
 		logger.info(`Bot online, logged in as ${client.user.tag}`);
 
 		// Gunther's presence update cycle

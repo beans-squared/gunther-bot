@@ -18,6 +18,9 @@ const client = new Client({
 	],
 });
 
+// Set for development
+logger.level = 'debug';
+
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 

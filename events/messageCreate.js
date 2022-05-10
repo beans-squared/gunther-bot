@@ -1,10 +1,13 @@
 const logger = require('./../logger');
+const index = require('./../index');
 
 module.exports = {
 	name: 'messageCreate',
 	execute(message) {
 		// Prevents the bot from acting on its own messages (main bot id/dev bot id)
 		if (message.author.id === '968166652208353340' || message.author.id === '968164973467541574') return;
+
+		index.currency.add(message.author.id, 1);
 
 		// Information message for when the bot is sent a DM
 		if (message.channel.type === 'DM') {

@@ -8,6 +8,7 @@
     "start": "node . | pino-pretty -i pid,hostname -t yyyy-mm-dd HH:MM:ss",
     "deploy": "node deploy-commands.js | pino-pretty -i pid,hostname -t yyyy-mm-dd HH:MM:ss",
     "global-deploy": "node global-deploy-commands.js | pino-pretty -i pid,hostname -t yyyy-mm-dd HH:MM:ss",
+	"init-database": "node initialize-database.js | pino-pretty -i pid,hostname -t yyyy-mm-dd HH:MM:ss",
     "lint": "eslint ."
   },
   "repository": {

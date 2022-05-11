@@ -1,18 +1,22 @@
 const logger = require('./../logger');
-const welcomeMessages = require('./welcomeMessages.json');
-const { welcomeChannelName } = require('./../config.json');
+const { WelcomeMessages } = require('./../database-objects');
+const { logChannel } = require('./../config.json');
 
 module.exports = {
 	name: 'guildMemberAdd',
-	execute(member) {
+	async execute(member) {
 		logger.debug(`User: ${member.user.tag} (${member.user.id}) has joined guild: ${member.guild} (${member.guild.id})`);
 
-		// Send the welcome message to the welcome channel defined in config.json
-		const channel = member.guild.channels.cache.find(element => element.name === welcomeChannelName);
-		channel.send(
-			`${welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)]}`
-				.replace('%MEMBER_NAME%', `${member.user}`)
-				.replace('%GUILD_NAME%', `${member.guild}`),
-		);
+		// Send the welcome message to the welcome channel defined in the database
+		const welcomemessage = await WelcomeMessages.findOne({ where: { guild_id: member.guild.id } });
+
+		if (welcomemessage) {
+			const channel = await member.guild.channels.cache.find(element => element.id === welcomemessage.channel_id);
+			logger.debug(`Custom welcome message found in database. Sending welcome message for new member ${member.user.tag}`);
+			return channel.send(`${welcomemessage.message}`.replace('%MEMBER_NAME%', `${member.user}`).replace('%GUILD_NAME%', `${member.guild}`));
+		}
+
+		const channel = await member.guild.channels.cache.find(element => element.name === logChannel);
+		return channel.send('No custom welcome message is configured. You can set one up by using the /welcomemessages command.');
 	},
 };

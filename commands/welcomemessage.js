@@ -13,25 +13,68 @@ module.exports = {
 				.addStringOption(option =>
 					option
 						.setName('message')
-						.setDescription('The new message you want the custom welcome message to be'),
+						.setDescription('The new message you want the custom welcome message to be')
+						.setRequired(true),
+				),
+		)
+		.addSubcommand(subcommand =>
+			subcommand
+				.setName('channel')
+				.setDescription('Select which channel you want welcome messages to be sent in.')
+				.addChannelOption(option =>
+					option
+						.setName('channel-name')
+						.setDescription('The name of the channel')
+						.addChannelType(0)
+						.setRequired(true),
 				),
 		),
 	async execute(interaction) {
-		const newMessage = interaction.options.getString('message');
+		if (interaction.options.getSubcommand() === 'edit') {
+			const newMessage = interaction.options.getString('message');
 
-		const affectedRows = await WelcomeMessages.update({ message: newMessage }, { where: { guild_id: interaction.guild.id } });
+			const affectedRows = await WelcomeMessages.update({ message: newMessage }, { where: { guild_id: interaction.guild.id } });
 
-		if (affectedRows > 0) {
-			logger.debug('Guild found in database. Updated welcome message content.');
-			return await interaction.reply(`Your guild's welcome message was edited successfully to: ${newMessage}`);
+			if (affectedRows > 0) {
+				logger.debug('Guild found in database. Updated welcome message content.');
+				return await interaction.reply(`Your guild's welcome message was edited successfully to: ${newMessage}`);
+			}
+
+			await WelcomeMessages.create({
+				guild_id: interaction.guild.id,
+				channel_id: interaction.channel.id,
+				message: newMessage,
+			});
+
+			logger.debug('Guild not found in database. Created new entry and added custom welcome message.');
+			return await interaction.reply(`
+				Your guild's welcome message was edited successfully to: ${newMessage}.
+
+				You have not previously defined a welcome channel, so I have set it to this channel for now.
+				To change the welcome message channel, simply use the command /welcomemessages channel.
+				`);
+		} else {
+			const newChannel = interaction.options.getChannel('channel-name');
+
+			const affectedRows = await WelcomeMessages.update({ channel_id: newChannel.id }, { where: { guild_id: interaction.guild.id } });
+
+			if (affectedRows > 0) {
+				logger.debug('Guild found in database. Updated welcome message channel ID.');
+				return await interaction.reply(`Your guild's welcome channel was updated to ${newChannel}.`);
+			}
+
+			await WelcomeMessages.create({
+				guild_id: interaction.guild.id,
+				channel_id: newChannel.id,
+			});
+
+			logger.debug('Guild not found in database. Created new entry and added welcome channel ID.');
+			return await interaction.reply(
+				`Your guild's welcome channel was updated to ${newChannel}.
+
+				You have not previously defined a custom welcome message, so it has set to the default welcome message.
+				To change your welcome message, simply use the command /welcomemessages edit.
+				`);
 		}
-
-		const message = await WelcomeMessages.create({
-			guild_id: interaction.guild.id,
-			message: newMessage,
-		});
-
-		logger.debug('Guild not found in database. Created new entry and added custom welcome message.');
-		return await interaction.reply(`Your guild's welcome message was edited successfully to: ${message.message}`);
 	},
 };

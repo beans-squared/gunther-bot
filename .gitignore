@@ -1,5 +1,6 @@
 .VSCodeCounter/
 node_modules/
+prod/
 
 .eslintrc.json
 database.sqlite

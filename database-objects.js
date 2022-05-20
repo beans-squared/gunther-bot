@@ -7,6 +7,7 @@ const sequelize = new Sequelize('database', 'user', 'password', {
 	storage: 'database.sqlite',
 });
 
+const Logging = require('./models/Logging')(sequelize, Sequelize.DataTypes);
 const WelcomeMessages = require('./models/WelcomeMessages')(sequelize, Sequelize.DataTypes);
 
-module.exports = { WelcomeMessages };
+module.exports = { Logging, WelcomeMessages };

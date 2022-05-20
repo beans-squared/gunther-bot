@@ -8,6 +8,7 @@ const sequelize = new Sequelize('database', 'user', 'password', {
 	storage: 'database.sqlite',
 });
 
+require('./models/Logging')(sequelize, Sequelize.DataTypes);
 require('./models/WelcomeMessages')(sequelize, Sequelize.DataTypes);
 
 const force = process.argv.includes('--force') || process.argv.includes('-f');

@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const { Logging } = require('./../database-objects');
+const { Logging } = require('../dbObjects');
 const { inlineCode } = require('@discordjs/builders');
 
 const logger = require('../logger');
@@ -125,15 +125,36 @@ module.exports = {
 	},
 
 	async logEmojiCreate(emoji) {
-		return emoji;
+		if (!await this.isLoggingEnabled(emoji.guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(emoji.guild);
+		if (logChannel) {
+			return this.createLog(logChannel, 'LUMINOUS_VIVID_PINK', `Emoji <${emoji.identifier}> (${emoji.name}) was uploaded to the server by ${await emoji.fetchAuthor()}.`, 'Emoji Upload');
+		}
+
+		return this.logMissingDefinedLogChannelWarning(emoji.guild);
 	},
 
 	async logEmojiDelete(emoji) {
-		return emoji;
+		if (!await this.isLoggingEnabled(emoji.guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(emoji.guild);
+		if (logChannel) {
+			return this.createLog(logChannel, 'LUMINOUS_VIVID_PINK', `Emoji <${emoji.identifier}> (${emoji.name}) was deleted from the server.`, 'Emoji Deletion');
+		}
+
+		return this.logMissingDefinedLogChannelWarning(emoji.guild);
 	},
 
 	async logEmojiUpdate(oldEmoji, newEmoji) {
-		return oldEmoji, newEmoji;
+		if (!await this.isLoggingEnabled(newEmoji.guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(newEmoji.guild);
+		if (logChannel) {
+			return this.createLog(logChannel, 'LUMINOUS_VIVID_PINK', `Emoji <${oldEmoji.identifier}> (${oldEmoji.name}) had its name changed to (${newEmoji.name}).`, 'Emoji Update');
+		}
+
+		return this.logMissingDefinedLogChannelWarning(newEmoji.guild);
 	},
 
 	async logError(error) {
@@ -141,11 +162,25 @@ module.exports = {
 	},
 
 	async logGuildBanAdd(ban) {
-		return ban;
+		if (!await this.isLoggingEnabled(ban.guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(ban.guild);
+		if (logChannel) {
+			return await this.createLog(logChannel, 'ORANGE', `⚖️ ${ban.user} was banned from the server.`, 'Member Ban');
+		}
+
+		return await this.logMissingDefinedLogChannelWarning(ban.guild);
 	},
 
-	async logGuildBadRemove(ban) {
-		return ban;
+	async logGuildBanRemove(ban) {
+		if (!await this.isLoggingEnabled(ban.guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(ban.guild);
+		if (logChannel) {
+			return await this.createLog(logChannel, 'ORANGE', `⚖️ ${ban.user}'s ban in this server was revoked.`, 'Member Unban');
+		}
+
+		return await this.logMissingDefinedLogChannelWarning(ban.guild);
 	},
 
 	async logGuildCreate(guild) {
@@ -157,7 +192,14 @@ module.exports = {
 	},
 
 	async logGuildIntegrationsUpdate(guild) {
-		return guild;
+		if (!await this.isLoggingEnabled(guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(guild);
+		if (logChannel) {
+			return await this.createLog(logChannel, 'BLURPLE', '🧩 Server integrations were updated.', 'Server Integrations Update');
+		}
+
+		return this.logMissingDefinedLogChannelWarning(guild);
 	},
 
 	async logGuildMemberAdd(member) {
@@ -169,7 +211,7 @@ module.exports = {
 		if (logChannel) {
 			const channel = await member.guild.channels.cache.find(element => element.id === logChannel.logChannel);
 			if (channel) {
-				return this.createLogWithIcon(channel, 'DARK_GREEN', `📥 ${member} has joined the server.`, 'User Join', `${member.user.avatarURL()}`);
+				return this.createLog(channel, 'DARK_GREEN', `📥 ${member} has joined the server.`, 'User Join');
 			}
 
 			return this.createLog(member.guild.channels.cache.first(), 'RED', '⚠️WARNING: Gunther attempted to post a log message, but your defined log channel no longer appears to exist. Maybe it was deleted by accident?', 'System Warning');
@@ -210,15 +252,36 @@ module.exports = {
 	},
 
 	async logGuildScheduledEventCreate(guildScheduledEvent) {
-		return guildScheduledEvent;
+		if (!await this.isLoggingEnabled(guildScheduledEvent.guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(guildScheduledEvent.guild);
+		if (logChannel) {
+			return this.createLog(logChannel, 'GOLD', `🗓️ A scheduled event **${guildScheduledEvent.name}** was created.\n${guildScheduledEvent}`, 'Scheduled Event Creation');
+		}
+
+		return this.logMissingDefinedLogChannelWarning(guildScheduledEvent.guild);
 	},
 
 	async logGuildScheduledEventDelete(guildScheduledEvent) {
-		return guildScheduledEvent;
+		if (!await this.isLoggingEnabled(guildScheduledEvent.guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(guildScheduledEvent.guild);
+		if (logChannel) {
+			return this.createLog(logChannel, 'GOLD', `🗓️ A scheduled event **${guildScheduledEvent.name}** was deleted.`, 'Scheduled Event Deletion');
+		}
+
+		return this.logMissingDefinedLogChannelWarning(guildScheduledEvent.guild);
 	},
 
-	async logGuildScheduledEventUpdate(guildScheduledEvent) {
-		return guildScheduledEvent;
+	async logGuildScheduledEventUpdate(oldGuildScheduledEvent, newGuildScheduledEvent) {
+		if (!await this.isLoggingEnabled(newGuildScheduledEvent.guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(newGuildScheduledEvent.guild);
+		if (logChannel) {
+			return this.createLog(logChannel, 'GOLD', `🗓️ A scheduled event **${newGuildScheduledEvent.name}** was updated.\n${newGuildScheduledEvent}`, 'Scheduled Event Update');
+		}
+
+		return this.logMissingDefinedLogChannelWarning(newGuildScheduledEvent.guild);
 	},
 
 	async logGuildScheduledEventUserAdd(guildScheduledEvent, user) {
@@ -234,7 +297,14 @@ module.exports = {
 	},
 
 	async logGuildUpdate(oldGuild, newGuild) {
-		return oldGuild, newGuild;
+		if (!await this.isLoggingEnabled(newGuild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(newGuild);
+		if (logChannel) {
+			return this.createLog(logChannel, 'BLURPLE', '⚙️ Server settings have been updated.', 'Server Update');
+		}
+
+		return this.logMissingDefinedLogChannelWarning(newGuild);
 	},
 
 	async logInteractionCreate(interaction) {
@@ -242,11 +312,25 @@ module.exports = {
 	},
 
 	async logInviteCreate(invite) {
-		return invite;
+		if (!await this.isLoggingEnabled(invite.guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(invite.guild);
+		if (logChannel) {
+			return this.createLog(logChannel, 'BLURPLE', `📨 A new invite for channel ${invite.channel} was created by ${invite.inviter}.\n<${invite}>`, 'Invite Create');
+		}
+
+		return this.logMissingDefinedLogChannelWarning(invite.guild);
 	},
 
 	async logInviteDelete(invite) {
-		return invite;
+		if (!await this.isLoggingEnabled(invite.guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(invite.guild);
+		if (logChannel) {
+			return this.createLog(logChannel, 'BLURPLE', `📨 An invite was deleted.\n<${invite}>`, 'Invite Delete');
+		}
+
+		return this.logMissingDefinedLogChannelWarning(invite.guild);
 	},
 
 	async logMessageCreate(message) {
@@ -290,15 +374,36 @@ module.exports = {
 	},
 
 	async logRoleCreate(role) {
-		return role;
+		if (!await this.isLoggingEnabled(role.guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(role.guild);
+		if (logChannel) {
+			return this.createLog(logChannel, 'RED', `🛡️ A new role ${role} was created.`, 'Role Create');
+		}
+
+		return this.logMissingDefinedLogChannelWarning(role.guild);
 	},
 
 	async logRoleDelete(role) {
-		return role;
+		if (!await this.isLoggingEnabled(role.guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(role.guild);
+		if (logChannel) {
+			return this.createLog(logChannel, 'RED', `🛡️ A role **@${role.name}** was deleted.`, 'Role Delete');
+		}
+
+		return this.logMissingDefinedLogChannelWarning(role.guild);
 	},
 
 	async logRoleUpdate(oldRole, newRole) {
-		return oldRole, newRole;
+		if (!await this.isLoggingEnabled(newRole.guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(newRole.guild);
+		if (logChannel) {
+			return this.createLog(logChannel, 'RED', `🛡️ A role ${newRole} was updated.`, 'Role Update');
+		}
+
+		return this.logMissingDefinedLogChannelWarning(newRole.guild);
 	},
 
 	async logStageInstanceCreate(stageInstance) {
@@ -314,23 +419,58 @@ module.exports = {
 	},
 
 	async logStickerCreate(sticker) {
-		return sticker;
+		if (!await this.isLoggingEnabled(sticker.guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(sticker.guild);
+		if (logChannel) {
+			return this.createLog(logChannel, 'PURPLE', `🖼️ A sticker **${sticker.name}** was created.`, 'Sticker Create');
+		}
+
+		return this.logMissingDefinedLogChannelWarning(sticker.guild);
 	},
 
 	async logStickerDelete(sticker) {
-		return sticker;
+		if (!await this.isLoggingEnabled(sticker.guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(sticker.guild);
+		if (logChannel) {
+			return this.createLog(logChannel, 'PURPLE', `🖼️ A sticker **${sticker.name}** was deleted.`, 'Sticker Delete');
+		}
+
+		return this.logMissingDefinedLogChannelWarning(sticker.guild);
 	},
 
 	async logStickerUpdate(oldSticker, newSticker) {
-		return oldSticker, newSticker;
+		if (!await this.isLoggingEnabled(newSticker.guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(newSticker.guild);
+		if (logChannel) {
+			return this.createLog(logChannel, 'PURPLE', `🖼️ A sticker **${newSticker.name}** was updated.`, 'Sticker Update');
+		}
+
+		return this.logMissingDefinedLogChannelWarning(newSticker.guild);
 	},
 
-	async logThreadCreate(thread, newlyCreated) {
-		return thread, newlyCreated;
+	async logThreadCreate(thread) {
+		if (!await this.isLoggingEnabled(thread.guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(thread.guild);
+		if (logChannel) {
+			return this.createLog(logChannel, 'NAVY', `🧵 A thread ${thread} has been created in parent channel ${thread.parent}.`, 'Thread Create');
+		}
+
+		return this.logMissingDefinedLogChannelWarning(thread.guild);
 	},
 
-	async logDelete(thread) {
-		return thread;
+	async logThreadDelete(thread) {
+		if (!await this.isLoggingEnabled(thread.guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(thread.guild);
+		if (logChannel) {
+			return this.createLog(logChannel, 'NAVY', `🧵 A thread **${thread.name}** has been deleted.`, 'Thread Delete');
+		}
+
+		return this.logMissingDefinedLogChannelWarning(thread.guild);
 	},
 
 	async logThreadListSync(threads) {
@@ -346,7 +486,14 @@ module.exports = {
 	},
 
 	async logThreadUpdate(oldThread, newThread) {
-		return oldThread, newThread;
+		if (!await this.isLoggingEnabled(newThread.guild)) return;
+
+		const logChannel = await this.isLoggingChannelDefined(newThread.guild);
+		if (logChannel) {
+			return this.createLog(logChannel, 'NAVY', `🧵 A thread ${newThread} was updated.`, 'Thread Update');
+		}
+
+		return this.logMissingDefinedLogChannelWarning(newThread.guild);
 	},
 
 	async logTypingStart(typing) {

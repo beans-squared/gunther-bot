@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, inlineCode } = require('@discordjs/builders');
-const { Logging } = require('./../database-objects');
+const { Logging } = require('../dbObjects');
 
 const logger = require('./../logger');
 

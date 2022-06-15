@@ -1,4 +1,4 @@
-const { WelcomeMessages } = require('./../database-objects');
+const { WelcomeMessages } = require('../dbObjects');
 const { inlineCode } = require('@discordjs/builders');
 
 const logger = require('./../logger');

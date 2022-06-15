@@ -1,7 +1,9 @@
+.vscode/
 .VSCodeCounter/
 node_modules/
 prod/
 
 .eslintrc.json
+bot.log
 database.sqlite
 config.json

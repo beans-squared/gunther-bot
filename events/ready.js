@@ -1,15 +1,24 @@
 const logger = require('./../logger');
+const ms = require('ms');
+const { cacheMembersFromDatabase, saveMembersToDatabase } = require('../suites/leveling');
 
 module.exports = {
 	name: 'ready',
 	once: true,
 	async execute(client) {
+		logger.info('Initializing initialization of initial initials...');
+
+		// Sync of GuildMembers
+		cacheMembersFromDatabase();
+
+		// Start saving cached members to database loop
+		setInterval(saveMembersToDatabase, ms('20m'));
+
 		logger.info(`Bot online, logged in as ${client.user.tag}`);
 
 		// Gunther's presence update cycle
-		// 1800000ms = 30m
 		decideActivity();
-		setInterval(decideActivity, 1800000);
+		setInterval(decideActivity, ms('30m'));
 
 		function decideActivity() {
 			const activityChoice = Math.floor(Math.random() * 3);

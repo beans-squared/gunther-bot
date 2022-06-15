@@ -12,10 +12,6 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.INTEGER,
 			default: 0,
 		},
-		level: {
-			type: DataTypes.INTEGER,
-			default: 0,
-		},
 	}, {
 		timestamps: false,
 	});

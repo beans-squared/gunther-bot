@@ -1,3 +1,4 @@
+const { calculateXp, recordXpGainToMemory, isCooldownActive, activateCooldown } = require('../suites/leveling');
 const logger = require('./../logger');
 
 module.exports = {
@@ -5,6 +6,15 @@ module.exports = {
 	execute(message) {
 		// Prevents the bot from acting on its own messages (main bot id/dev bot id)
 		if (message.author.id === '968166652208353340' || message.author.id === '968164973467541574') return;
+
+		// Xp
+		if (isCooldownActive()) {
+			0;
+		} else {
+			activateCooldown();
+			recordXpGainToMemory(message.member, calculateXp(message.member));
+		}
+
 
 		// Information message for when the bot is sent a DM
 		if (message.channel.type === 'DM') {

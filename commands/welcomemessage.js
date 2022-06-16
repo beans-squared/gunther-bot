@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { WelcomeMessages } = require('./../database-objects');
+const { WelcomeMessages } = require('../dbObjects');
 const logger = require('./../logger');
 
 module.exports = {

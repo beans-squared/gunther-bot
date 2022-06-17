@@ -32,6 +32,8 @@ module.exports = {
 				.setDescription('Get information about the bot'),
 		),
 	async execute(interaction) {
+		if (!interaction.inGuild()) return await interaction.reply({ content: 'This command can only be run in a server text channel.', ephemeral: true });
+
 		const user = interaction.options.getUser('target');
 		switch (interaction.options.getSubcommand()) {
 		case 'user': {

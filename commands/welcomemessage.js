@@ -30,6 +30,8 @@ module.exports = {
 				),
 		),
 	async execute(interaction) {
+		if (!interaction.inGuild()) return await interaction.reply({ content: 'This command can only be run in a server text channel.', ephemeral: true });
+
 		if (interaction.options.getSubcommand() === 'edit') {
 			const newMessage = interaction.options.getString('message');
 

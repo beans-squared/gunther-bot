@@ -16,6 +16,8 @@ module.exports = {
 				),
 		),
 	async execute(interaction) {
+		if (!interaction.inGuild()) return await interaction.reply({ content: 'This command can only be run in a server text channel.', ephemeral: true });
+
 		const subcommand = interaction.options.getSubcommand();
 		if (subcommand === 'xp') {
 			const member = interaction.options.getUser('member');

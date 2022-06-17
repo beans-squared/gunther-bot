@@ -26,6 +26,8 @@ module.exports = {
 				.setDescription('Toggle logging on or off.'),
 		),
 	async execute(interaction) {
+		if (!interaction.inGuild()) return await interaction.reply({ content: 'This command can only be run in a server text channel.', ephemeral: true });
+
 		const subCommand = interaction.options.getSubcommand();
 		if (subCommand === 'channel') {
 			const channel = interaction.options.getChannel('channel');

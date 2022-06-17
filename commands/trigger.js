@@ -15,6 +15,8 @@ module.exports = {
 				]),
 		),
 	async execute(interaction) {
+		if (!interaction.inGuild()) return await interaction.reply({ content: 'This command can only be run in a server text channel.', ephemeral: true });
+
 		const input = interaction.options.getString('event');
 
 		switch (input) {

@@ -5,12 +5,24 @@ const { clientId, guildId, token } = require('./config.json');
 const logger = require('./logger');
 
 const commands = [];
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+const directories = fs.readdirSync('./commands/global', { withFileTypes: true }).filter(dirent => dirent.isDirectory());
+
+for (const dir of directories) {
+	const commandFiles = fs.readdirSync(`./commands/global/${dir.name}`).filter(file => file.endsWith('.js'));
+	for (const file of commandFiles) {
+		const command = require(`./commands/global/${dir.name}/${file}`);
+		commands.push(command.data.toJSON());
+	}
+}
+
+const commandFiles = fs.readdirSync('./commands/global').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
+	const command = require(`./commands/global/${file}`);
 	commands.push(command.data.toJSON());
 }
+
 
 const rest = new REST({ version: '9' }).setToken(token);
 

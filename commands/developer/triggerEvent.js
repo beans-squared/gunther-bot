@@ -2,7 +2,7 @@ const { inlineCode, SlashCommandBuilder } = require('@discordjs/builders');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('trigger')
+		.setName('triggerevent')
 		.setDescription('Manually trigger an event')
 		.addStringOption(option =>
 			option
@@ -21,13 +21,13 @@ module.exports = {
 
 		switch (input) {
 		case 'guildMemberAdd': {
-			const event = require('./../events/guildMemberAdd');
+			const event = require('../../events/guildMemberAdd');
 			event.execute(interaction.member);
 			await interaction.reply(`Event: ${inlineCode(event.name)} was executed.`);
 			break;
 		}
 		case 'guildMemberRemove': {
-			const event = require('./../events/guildMemberRemove');
+			const event = require('../../events/guildMemberRemove');
 			event.execute(interaction.member);
 			await interaction.reply(`Event: ${inlineCode(event.name)} was executed.`);
 			break;

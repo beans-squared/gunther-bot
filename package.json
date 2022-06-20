@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node .",
     "deploy": "node deploy-commands.js",
+	"deploy-dev": "node deploy-developer-commands.js",
     "global-deploy": "node global-deploy-commands.js",
     "init-database": "node dbInit.js",
     "reset-database": "node dbInit.js -f",

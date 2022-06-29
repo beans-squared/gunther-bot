@@ -8,10 +8,11 @@ const sequelize = new Sequelize('database', 'user', 'password', {
 	storage: 'database.sqlite',
 });
 
+require('./models/Guild')(sequelize, Sequelize.DataTypes);
 require('./models/GuildMember')(sequelize, Sequelize.DataTypes);
-require('./models/Guilds')(sequelize, Sequelize.DataTypes);
-require('./models/Logging')(sequelize, Sequelize.DataTypes);
-require('./models/WelcomeMessages')(sequelize, Sequelize.DataTypes);
+require('./models/Invite')(sequelize, Sequelize.DataTypes);
+require('./models/SettingsLogging')(sequelize, Sequelize.DataTypes);
+require('./models/SettingsWelcoming')(sequelize, Sequelize.DataTypes);
 
 const force = process.argv.includes('--force') || process.argv.includes('-f');
 const alter = process.argv.includes('--alter') || process.argv.includes('-a');

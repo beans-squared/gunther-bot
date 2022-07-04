@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, inlineCode } = require('@discordjs/builders');
-const { Logging } = require('../dbObjects');
+const { Logging } = require('../../dbObjects');
 
-const logger = require('./../logger');
+const logger = require('../../logger');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -26,6 +26,8 @@ module.exports = {
 				.setDescription('Toggle logging on or off.'),
 		),
 	async execute(interaction) {
+		if (!interaction.inGuild()) return await interaction.reply({ content: 'This command can only be run in a server text channel.', ephemeral: true });
+
 		const subCommand = interaction.options.getSubcommand();
 		if (subCommand === 'channel') {
 			const channel = interaction.options.getChannel('channel');

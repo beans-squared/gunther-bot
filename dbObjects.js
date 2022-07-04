@@ -7,11 +7,12 @@ const sequelize = new Sequelize('database', 'user', 'password', {
 	storage: 'database.sqlite',
 });
 
-const GuildMembers = require('./models/GuildMembers')(sequelize, Sequelize.DataTypes);
-const Guilds = require('./models/Guilds')(sequelize, Sequelize.DataTypes);
-const Logging = require('./models/Logging')(sequelize, Sequelize.DataTypes);
-const WelcomeMessages = require('./models/WelcomeMessages')(sequelize, Sequelize.DataTypes);
+const Guilds = require('./models/Guild')(sequelize, Sequelize.DataTypes);
+const GuildMembers = require('./models/GuildMember')(sequelize, Sequelize.DataTypes);
+const Invites = require('./models/Invite')(sequelize, Sequelize.DataTypes);
+const Logging = require('./models/SettingsLogging')(sequelize, Sequelize.DataTypes);
+const WelcomeMessages = require('./models/SettingsWelcoming')(sequelize, Sequelize.DataTypes);
 
 GuildMembers.belongsTo(Guilds, { foreignKey: 'guild_id', as: 'guild' });
 
-module.exports = { GuildMembers, Guilds, Logging, WelcomeMessages };
+module.exports = { GuildMembers, Guilds, Invites, Logging, WelcomeMessages };

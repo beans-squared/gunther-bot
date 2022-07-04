@@ -21,6 +21,8 @@ module.exports = {
 				.setDescription('Get the server\'s icon'),
 		),
 	async execute(interaction) {
+		if (!interaction.inGuild()) return await interaction.reply({ content: 'This command can only be run in a server text channel.', ephemeral: true });
+
 		if (interaction.options.getSubcommand() === 'user') {
 			const user = interaction.options.getUser('tag');
 			if (user) {

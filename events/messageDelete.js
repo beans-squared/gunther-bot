@@ -1,4 +1,4 @@
-const { deleteRoleMenu } = require('../commands/public/rolemenu');
+const { deleteRoleMenu } = require('../commands/rolemenu');
 const logger = require('./../logger');
 
 module.exports = {

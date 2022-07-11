@@ -22,10 +22,10 @@ module.exports = {
 					option
 						.setName('channel')
 						.setDescription('The channel to post this role menu.')
-						.addChannelTypes([
+						.addChannelTypes(
 							ChannelType.GuildNews,
 							ChannelType.GuildText,
-						])
+						)
 						.setRequired(true),
 				)
 				.addStringOption(option =>

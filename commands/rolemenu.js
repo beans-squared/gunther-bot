@@ -1,8 +1,8 @@
 const { SlashCommandBuilder, inlineCode } = require('@discordjs/builders');
 const { MessageEmbed, MessageButton, MessageActionRow } = require('discord.js');
 const { ChannelType } = require('discord-api-types/v10');
-const { RoleMenus } = require('../../dbObjects');
-const logger = require('../../logger');
+const { RoleMenus } = require('../dbObjects');
+const logger = require('../logger');
 
 module.exports = {
 	data: new SlashCommandBuilder()

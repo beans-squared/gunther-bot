@@ -11,6 +11,7 @@ const sequelize = new Sequelize('database', 'user', 'password', {
 require('./models/Guild')(sequelize, Sequelize.DataTypes);
 require('./models/GuildMember')(sequelize, Sequelize.DataTypes);
 require('./models/Invite')(sequelize, Sequelize.DataTypes);
+require('./models/RoleMenu')(sequelize, Sequelize.DataTypes);
 require('./models/SettingsLogging')(sequelize, Sequelize.DataTypes);
 require('./models/SettingsWelcoming')(sequelize, Sequelize.DataTypes);
 

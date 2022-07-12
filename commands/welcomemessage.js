@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { WelcomeMessages } = require('../../dbObjects');
-const logger = require('../../logger');
+const { ChannelType } = require('discord-api-types/v10');
+const { WelcomeMessages } = require('../dbObjects');
+const logger = require('../logger');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -25,7 +26,9 @@ module.exports = {
 					option
 						.setName('channel-name')
 						.setDescription('The name of the channel')
-						.addChannelType(0)
+						.addChannelTypes(
+							ChannelType.GuildText,
+						)
 						.setRequired(true),
 				),
 		),

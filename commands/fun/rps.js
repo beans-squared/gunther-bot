@@ -10,9 +10,11 @@ module.exports = {
 				.setName('choice')
 				.setDescription('Choice Rock, Paper or Scissors')
 				.setRequired(true)
-				.addChoice('Rock', 'Rock')
-				.addChoice('Paper', 'Paper')
-				.addChoice('Scissors', 'Scissors'),
+				.addChoices(
+					{ name: 'Rock', value: 'Rock' },
+					{ name: 'Paper', value: 'Paper' },
+					{ name: 'Scissors', value: 'Scissors' },
+				),
 		),
 	async execute(interaction) {
 		const botChoice = Math.floor(Math.random() * 3);

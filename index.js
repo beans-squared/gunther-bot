@@ -20,32 +20,23 @@ const client = new Client({
 });
 
 client.commands = new Collection();
-const directories = fs.readdirSync('./commands/public', { withFileTypes: true }).filter(dirent => dirent.isDirectory());
 
+const directories = fs.readdirSync('./commands', { withFileTypes: true }).filter(dirent => dirent.isDirectory());
 for (const dir of directories) {
-	const commandFiles = fs.readdirSync(`./commands/public/${dir.name}`).filter(file => file.endsWith('.js'));
+	const commandFiles = fs.readdirSync(`./commands/${dir.name}`).filter(file => file.endsWith('.js'));
 	for (const file of commandFiles) {
-		const command = require(`./commands/public/${dir.name}/${file}`);
+		const command = require(`./commands/${dir.name}/${file}`);
 		client.commands.set(command.data.name, command);
 	}
 }
 
-const commandFiles = fs.readdirSync('./commands/public').filter(file => file.endsWith('.js'));
-
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
-	const command = require(`./commands/public/${file}`);
-	client.commands.set(command.data.name, command);
-}
-
-const devCommandFiles = fs.readdirSync('./commands/dev').filter(file => file.endsWith('.js'));
-
-for (const file of devCommandFiles) {
-	const command = require(`./commands/dev/${file}`);
+	const command = require(`./commands/${file}`);
 	client.commands.set(command.data.name, command);
 }
 
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
-
 for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
 	if (event.once) {

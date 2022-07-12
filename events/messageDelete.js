@@ -1,3 +1,4 @@
+const { deleteRoleMenu } = require('../commands/rolemenu');
 const logger = require('./../logger');
 
 module.exports = {
@@ -22,5 +23,7 @@ module.exports = {
 		} else {
 			logger.debug(`A message sent by ${message.author.tag} was deleted by an unknown user or application.`);
 		}
+
+		await deleteRoleMenu(message);
 	},
 };

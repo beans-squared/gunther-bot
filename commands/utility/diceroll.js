@@ -13,12 +13,14 @@ module.exports = {
 			option
 				.setName('die-type')
 				.setDescription('Select the types of dice being cast')
-				.addChoice('d4', 4)
-				.addChoice('d6', 6)
-				.addChoice('d8', 8)
-				.addChoice('d10', 10)
-				.addChoice('d12', 12)
-				.addChoice('d20', 20),
+				.addChoices(
+					{ name: 'd4', value: 4 },
+					{ name: 'd6', value: 6 },
+					{ name: 'd8', value: 8 },
+					{ name: 'd10', value: 10 },
+					{ name: 'd12', value: 12 },
+					{ name: 'd20', value: 20 },
+				),
 		),
 	async execute(interaction) {
 		let numberOfDice = interaction.options.getInteger('number-of-dice');
